@@ -1,0 +1,9 @@
+# Ignorar archivos .class
+*.class
+
+# Ignorar archivos .swp
+*.swp
+
+# Ignorar archivos de proyecto de IntelliJ IDEA
+.idea/
+*.iml
