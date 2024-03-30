@@ -44,9 +44,9 @@ class Deck {
 
         for (String palo : palos) {
             for (String color : colores) {
-                if((palo == "tréboles" && color == "negro")||(palo == "spades" && color == "negro")||(palo == "corazones" && color == "rojo")||(palo == "diamantes" && color == "rojo")){
-                for (String valor : valores) {
-                    cards.add(new Card(palo, color, valor));
+                if ((palo.equals("tréboles") && color.equals("negro")) || (palo.equals("spades") && color.equals("negro")) || (palo.equals("corazones") && color.equals("rojo")) || (palo.equals("diamantes") && color.equals("rojo"))) {
+                    for (String valor : valores) {
+                        cards.add(new Card(palo, color, valor));
                     }
                 }
             }
@@ -59,41 +59,85 @@ class Deck {
     }
 
     public void head() {
+        if (cards.isEmpty()) {
+            System.out.println("El mazo está vacío.");
+            return;
+        }
         Card card = cards.remove(0);
         System.out.println(card.toString());
-        System.out.println("Quedan " + cards.size() + " cartas en deck");
+        System.out.println("Quedan " + cards.size() + " cartas en el mazo");
     }
 
     public void pick() {
+        if (cards.isEmpty()) {
+            System.out.println("El mazo está vacío.");
+            return;
+        }
         int index = (int) (Math.random() * cards.size());
         Card card = cards.remove(index);
         System.out.println(card.toString());
-        System.out.println("Quedan " + cards.size() + " cartas en deck");
+        System.out.println("Quedan " + cards.size() + " cartas en el mazo");
     }
 
     public void hand() {
-        System.out.println("Mano de 5 cartas:");
+        if (cards.size() < 5) {
+            System.out.println("No hay suficientes cartas en el mazo para generar una mano de 5 cartas.");
+            return;
+        }
 
+        System.out.println("Mano de 5 cartas:");
         for (int i = 0; i < 5; i++) {
             Card card = cards.remove(0);
             System.out.println(card.toString());
         }
-
-        System.out.println("Quedan " + cards.size() + " cartas en deck");
+        System.out.println("Quedan " + cards.size() + " cartas en el mazo");
     }
 }
+
 public class Main {
     public static void main(String[] args) {
         Deck deck = new Deck();
         deck.shuffle();
 
-        System.out.println("\nObteniendo la primera carta:");
-        deck.head();
+        Scanner scanner = new Scanner(System.in);
+        int option;
 
-        System.out.println("\nSeleccionando una carta al azar:");
-        deck.pick();
+        do {
+            option = showMenu(scanner);
+            switch (option) {
+                case 1:
+                    deck.shuffle();
+                    break;
+                case 2:
+                    deck.head();
+                    break;
+                case 3:
+                    deck.pick();
+                    break;
+                case 4:
+                    deck.hand();
+                    break;
+                case 0:
+                    System.out.println("¡Hasta luego!");
+                    break;
+                default:
+                    System.out.println("Opción no válida");
+                    break;
+            }
+        } while (option != 0);
 
-        System.out.println("\nObteniendo una mano de 5 cartas:");
-        deck.hand();
+        scanner.close();
+    }
+
+    public static int showMenu(Scanner scanner) {
+        System.out.println("\nBienvenido a Poker!");
+        System.out.println("Selecciona una opción:");
+        System.out.println("1 Mezclar deck");
+        System.out.println("2 Sacar una carta");
+        System.out.println("3 Carta al azar");
+        System.out.println("4 Generar una mano de 5 cartas");
+        System.out.println("0 Salir");
+        System.out.print("Opción: ");
+        return scanner.nextInt();
     }
 }
